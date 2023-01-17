@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '../app.css'; // tailwind
 	import { invalidateAll } from '$app/navigation';
 	import { supabase } from '$lib/supabase';
 	import { onMount } from 'svelte';
