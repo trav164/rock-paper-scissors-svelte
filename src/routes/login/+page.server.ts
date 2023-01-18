@@ -17,7 +17,7 @@ export const actions: Actions = {
             if (err instanceof AuthApiError && err.status === 400) {
                 return fail(400, {
                     error: 'Invalid login credentials.',
-                })
+                },)
             }
             return fail(500, {
                 error: 'Server error. Please try again later.',
