@@ -14,7 +14,7 @@
 	};
 </script>
 
-<main>
+<main class="bg-gray-900">
 	<div class="flex items-center justify-center min-h-screen bg-gray-900">
 		<div class="flex flex-col items-center bg-slate-300 p-8 rounded shadow-xl">
 			<h1 class="font-bold md:text-center sm:text-lg md:text-3xl xl:text-5xl">
@@ -28,7 +28,7 @@
 					<div class="flex flex-col w-full items-center justify-center gap-6 mt-12 md:flex-row">
 						<button
 							class="bg-violet-500 w-full h-12 md:w-24 rounded text-white font-semibold shadow-lg hover:bg-violet-600 hover:scale-105 transition duration:1000 focus:border-none"
-							type="submit"><a href="/play">Play</a></button
+							type="submit"><a href="/game">Play</a></button
 						>
 						<form
 							action="/logout"
