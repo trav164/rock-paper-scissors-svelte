@@ -15,32 +15,46 @@
 </script>
 
 <main>
-	<div class="flex h-screen">
-		<div class="m-auto bg-slate-200 shadow-lg rounded-lg h-64 p-6">
-			<h1 class="text-3xl font-bold underline">
-				Rock Paper Scissors Game with Svelte and Supabase
+	<div class="flex items-center justify-center min-h-screen bg-gray-900">
+		<div class="flex flex-col items-center bg-slate-300 p-8 rounded shadow-xl">
+			<h1 class="font-bold md:text-center sm:text-lg md:text-3xl xl:text-5xl">
+				Rock Paper Scissors Game
 			</h1>
+			<p class="font-light text-sm">Built with SvelteKit & Supabase</p>
 
 			{#if data.session}
-				<p>Welcome, {data.session.user.email}</p>
-
-				<form action="/logout" method="POST" use:enhance={submitLogout}>
-					<button
-						class="bg-red-500 p-2 rounded text-white font-bold text-md shadow hover:bg-red-800 focus:outline-none focus:shadow-outline"
-						type="submit">Logout</button
-					>
-				</form>
+				<div class="mt-12">
+					<p>Welcome, <b>{data.session.user.email}</b></p>
+					<div class="flex flex-col w-full items-center justify-center gap-6 mt-12 md:flex-row">
+						<button
+							class="bg-violet-500 w-full h-12 md:w-24 rounded text-white font-semibold shadow-lg hover:bg-violet-600 hover:scale-105 transition duration:1000 focus:border-none"
+							type="submit"><a href="/play">Play</a></button
+						>
+						<form
+							action="/logout"
+							method="POST"
+							use:enhance={submitLogout}
+							class="w-full h-12 md:w-24"
+						>
+							<button
+								class="bg-gray-900 w-full h-12 md:w-24 rounded text-white font-semibold shadow-lg hover:bg-gray-700 transition duration:1000"
+								type="submit">Logout</button
+							>
+						</form>
+					</div>
+				</div>
 			{:else}
-				<p>Lets play some rock paper scissors!</p>
-				<div class="flex bg-red-400">
-					<button
-						class="font-serif p-4 font-medium bg-gradient-to-r from-[#0BAB64] to-[#3BB78F] text-slate-200 shadow-lg rounded-lg"
-						><a href="/login">Login</a></button
-					>
-					<button
-						class="p-4 font-medium bg-gradient-to-r from-[#FE5858] to-[#EE9617] text-slate-200 shadow-lg rounded-lg"
-						><a href="/register">Register</a></button
-					>
+				<div class="w-full">
+					<div class="flex flex-col items-center justify-center gap-6 mt-12 md:flex-row">
+						<button
+							class="bg-violet-500 w-full h-12 md:w-24 rounded text-white font-semibold shadow-lg hover:bg-violet-600 transition duration:1000"
+							><a href="/login">Login</a></button
+						>
+						<button
+							class="bg-gray-900 w-full h-12 md:w-24 rounded text-white font-semibold shadow-lg hover:bg-gray-700 transition duration:1000"
+							><a href="/register">Register</a></button
+						>
+					</div>
 				</div>
 			{/if}
 		</div>
