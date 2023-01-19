@@ -9,12 +9,10 @@
 				<p class="mt-4 mb-8 dark:text-gray-400">
 					But dont worry, you can find plenty of other things on our homepage.
 				</p>
-				<a
-					rel="noopener noreferrer"
-					href="/"
-					class="px-8 py-3 font-semibold rounded dark:bg-violet-400 dark:text-gray-900"
-					>Back to homepage</a
-				>
+				<button
+					class="px-8 py-3 font-semibold rounded bg-violet-500 hover:bg-violet-600 hover:scale-105 transition duration:1000"
+					><a rel="noopener noreferrer" href="/"> Back to homepage </a>
+				</button>
 			</div>
 		</div>
 	</section>
