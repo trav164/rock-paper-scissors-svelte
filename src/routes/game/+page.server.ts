@@ -14,7 +14,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 }
 
 export const actions: Actions = {
-    updateScores: async ({ request, locals }) => {
-        console.log(request, locals);
+    updateWinner: async ({ url, locals }) => {
+        console.warn('actions getting hit: ', url.searchParams.get('winner'));
+        // console.log(url, locals);
     }
 }
