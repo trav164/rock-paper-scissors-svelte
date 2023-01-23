@@ -7,18 +7,18 @@
 
 	let gameInfo = data;
 
-	let currentWinner: string | null = null;
-
 	// to pass to scores component
 	let scores: Scores = {
 		player_score: gameInfo.player_score,
 		computer_score: gameInfo.computer_score
 	};
 
+	let computerMove: string | null = null;
+
 	const selectWinner = (player: string): string | null => {
-		const computerMove = ['rock', 'paper', 'scissors'][Math.floor(Math.random() * 3)][0];
+		computerMove = ['rock', 'paper', 'scissors'][Math.floor(Math.random() * 3)];
 		let result;
-		switch (player + computerMove) {
+		switch (player + computerMove[0]) {
 			case 'rs':
 			case 'sp':
 			case 'pr':
@@ -40,7 +40,6 @@
 				result = null;
 				break;
 		}
-		currentWinner = result;
 		return result;
 	};
 
@@ -61,11 +60,15 @@
 </script>
 
 <main class="bg-gray-900">
+	{#if computerMove}
+		<h1 class="capitalize text-white font-3xl font-bold">Computer Move: {computerMove}</h1>
+	{/if}
+
 	<Score score={scores} />
 	<div class="flex flex-row gap-12 items-center justify-center min-h-screen bg-gray-900">
 		<button
 			type="submit"
-			class="flex items-center bg-slate-300 p-8 rounded-full shadow-xl hover:scale-110 transition duration:1000 cursor-pointer"
+			class="flex items-center bg-slate-300 p-8 rounded-full shadow-xl hover:scale-110 hover:bg-violet-400 transition duration:1000 cursor-pointer"
 			on:click={() => handleClick('r')}
 		>
 			<img src="./images/rock.png" alt="" class="w-24" />
@@ -73,7 +76,7 @@
 
 		<button
 			type="submit"
-			class="flex items-center bg-slate-300 p-8 rounded-full shadow-xl hover:scale-110 transition duration:1000 cursor-pointer"
+			class="flex items-center bg-slate-300 p-8 rounded-full shadow-xl hover:scale-110 hover:bg-violet-400 transition duration:1000 cursor-pointer"
 			on:click={() => handleClick('p')}
 		>
 			<img src="./images/paper.png" alt="" class="w-24" />
@@ -81,7 +84,7 @@
 
 		<button
 			type="submit"
-			class="flex items-center bg-slate-300 p-8 rounded-full shadow-xl hover:scale-110 transition duration:1000 cursor-pointer"
+			class="flex items-center bg-slate-300 p-8 rounded-full shadow-xl hover:scale-110 hover:bg-violet-400 transition duration:1000 cursor-pointer"
 			on:click={() => handleClick('s')}
 		>
 			<img src="./images/scissors.png" alt="" class="w-24" />
