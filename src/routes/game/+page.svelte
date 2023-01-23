@@ -1,13 +1,18 @@
 <script lang="ts">
-	import { applyAction, enhance, type SubmitFunction } from '$app/forms';
-	import { invalidateAll } from '$app/navigation';
 	import Score from '$lib/components/score.svelte';
-	import type { Scores } from 'src/models/games.model';
+	import { supabase } from '$lib/supabase';
+	import type { Games, Scores } from 'src/models/games.model';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
 	let currentWinner: string | null = null;
+
+	// to pass to scores component
+	let score: Scores = {
+		player_score: data.player_score,
+		computer_score: data.computer_score
+	};
 
 	const selectWinner = (player: string) => {
 		const computerMove = ['rock', 'paper', 'scissors'][Math.floor(Math.random() * 3)][0];
@@ -38,66 +43,43 @@
 		return result;
 	};
 
-	const submitScore: SubmitFunction = ({ form, data, action, cancel }) => {
-		console.log(form);
-		console.log(data);
+	const handleClick = async (move: string) => {
+		selectWinner(move);
 
-		// if (!currentWinner) cancel(); // tie
+		const { error } = await supabase
+			.from('games')
+			.update({ player_score: score.player_score, computer_score: score.computer_score })
+			.eq('user_id', data.user_id);
 
-		console.log('CURRENT WINNER', currentWinner);
-		return async ({ result, update }) => {
-			await applyAction(result);
-			await invalidateAll();
-		};
-	};
-
-	// to pass to scores component
-	let score: Scores = {
-		player_score: data.player_score,
-		computer_score: data.computer_score
+		console.warn(error);
 	};
 </script>
 
 <main class="bg-gray-900">
 	<Score {score} />
 	<div class="flex flex-row gap-12 items-center justify-center min-h-screen bg-gray-900">
-		<form
-			method="POST"
-			action="?/updateWinner&winner={selectWinner('r')}"
-			use:enhance={submitScore}
+		<button
+			type="submit"
+			class="flex items-center bg-slate-300 p-8 rounded-full shadow-xl hover:scale-110 transition duration:1000 cursor-pointer"
+			on:click={() => handleClick('r')}
 		>
-			<button
-				type="submit"
-				class="flex items-center bg-slate-300 p-8 rounded-full shadow-xl hover:scale-110 transition duration:1000 cursor-pointer"
-			>
-				<img src="./images/rock.png" alt="" class="w-24" />
-			</button>
-		</form>
+			<img src="./images/rock.png" alt="" class="w-24" />
+		</button>
 
-		<form
-			method="POST"
-			action="?/updateWinner&winner={selectWinner('p')}"
-			use:enhance={submitScore}
+		<button
+			type="submit"
+			class="flex items-center bg-slate-300 p-8 rounded-full shadow-xl hover:scale-110 transition duration:1000 cursor-pointer"
+			on:click={() => handleClick('p')}
 		>
-			<button
-				type="submit"
-				class="flex items-center bg-slate-300 p-8 rounded-full shadow-xl hover:scale-110 transition duration:1000 cursor-pointer"
-			>
-				<img src="./images/paper.png" alt="" class="w-24" />
-			</button>
-		</form>
+			<img src="./images/paper.png" alt="" class="w-24" />
+		</button>
 
-		<form
-			method="POST"
-			action="?/updateWinner&winner={selectWinner('s')}"
-			use:enhance={submitScore}
+		<button
+			type="submit"
+			class="flex items-center bg-slate-300 p-8 rounded-full shadow-xl hover:scale-110 transition duration:1000 cursor-pointer"
+			on:click={() => handleClick('s')}
 		>
-			<button
-				type="submit"
-				class="flex items-center bg-slate-300 p-8 rounded-full shadow-xl hover:scale-110 transition duration:1000 cursor-pointer"
-			>
-				<img src="./images/scissors.png" alt="" class="w-24" />
-			</button>
-		</form>
+			<img src="./images/scissors.png" alt="" class="w-24" />
+		</button>
 	</div>
 </main>

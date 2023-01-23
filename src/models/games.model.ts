@@ -1,7 +1,7 @@
 export interface Games extends Scores {
     id?: string;
     created_at?: string;
-    user_id: string;
+    user_id?: string;
 }
 
 export interface Scores {
