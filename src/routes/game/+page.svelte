@@ -1,20 +1,21 @@
 <script lang="ts">
 	import Score from '$lib/components/score.svelte';
-	import { supabase } from '$lib/supabase';
-	import type { Games, Scores } from 'src/models/games.model';
+	import type { Scores } from 'src/models/games.model';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
 
+	let gameInfo = data;
+
 	let currentWinner: string | null = null;
 
 	// to pass to scores component
-	let score: Scores = {
-		player_score: data.player_score,
-		computer_score: data.computer_score
+	let scores: Scores = {
+		player_score: gameInfo.player_score,
+		computer_score: gameInfo.computer_score
 	};
 
-	const selectWinner = (player: string) => {
+	const selectWinner = (player: string): string | null => {
 		const computerMove = ['rock', 'paper', 'scissors'][Math.floor(Math.random() * 3)][0];
 		let result;
 		switch (player + computerMove) {
@@ -22,13 +23,13 @@
 			case 'sp':
 			case 'pr':
 				result = 'player';
-				score.player_score++;
+				scores.player_score++;
 				break;
 			case 'sr':
 			case 'ps':
 			case 'rp':
 				result = 'computer';
-				score.computer_score++;
+				scores.computer_score++;
 				break;
 			case 'pp':
 			case 'ss':
@@ -44,19 +45,23 @@
 	};
 
 	const handleClick = async (move: string) => {
-		selectWinner(move);
+		if (!selectWinner(move)) return; // don't patch to database if the game is a draw.
+		const response = await fetch('/api/game', {
+			method: 'POST',
+			body: JSON.stringify(scores),
+			headers: {
+				'content-type': 'application/json'
+			},
+			credentials: 'include'
+		});
 
-		const { error } = await supabase
-			.from('games')
-			.update({ player_score: score.player_score, computer_score: score.computer_score })
-			.eq('user_id', data.user_id);
-
-		console.warn(error);
+		let returnedData = await response.json();
+		gameInfo = returnedData[0];
 	};
 </script>
 
 <main class="bg-gray-900">
-	<Score {score} />
+	<Score score={scores} />
 	<div class="flex flex-row gap-12 items-center justify-center min-h-screen bg-gray-900">
 		<button
 			type="submit"
